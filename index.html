@@ -408,6 +408,23 @@ ol.inst li::before{content:counter(n);flex:none;width:26px;height:26px;border-ra
     </div>
   </div>
 </div>
+<div class="modal hide" id="manualModal" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <div class="sheet-head"><img src="apple-touch-icon.png" alt=""><div><h3>Kopie heruntergeladen</h3><p>Dieses Handy erlaubt das direkte Teilen nicht. So kommt die Kopie trotzdem ins OneDrive:</p></div></div>
+    <div class="sheet-body">
+      <p style="margin-top:0">Gespeichert in <b>Downloads</b> als<br><b id="mu-name" style="word-break:break-all"></b></p>
+      <ol class="inst">
+        <li><span>Öffne die <b>OneDrive-App</b> und melde dich mit dem Schulkonto an.</span></li>
+        <li><span>Öffne deinen Ordner für die Lernendenberatung.</span></li>
+        <li><span>Tippe auf <b>+</b> → <b>Hochladen</b>.</span></li>
+        <li><span>Wähle <b>Downloads</b> und die Datei oben.</span></li>
+        <li><span>Am Computer liest du sie unter <b>Daten &amp; OneDrive</b> mit <b>Daten einlesen</b> ein.</span></li>
+      </ol>
+      <p class="hint" id="mu-diag" style="font-size:12px"></p>
+      <div class="sheet-foot"><span></span><button class="btn primary" onclick="document.getElementById('manualModal').classList.add('hide')">Verstanden</button></div>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>/*! ExcelJS 19-10-2023 */
@@ -872,21 +889,31 @@ async function saveSettings(){
 async function backup(){
   const n=state.entries.length;
   if(!n && !confirm('Auf diesem Gerät sind keine Einträge gespeichert. Trotzdem eine leere Kopie speichern?\n\nTipp iPhone: Einträge, die in Safari erfasst wurden, sind in der installierten App nicht sichtbar (und umgekehrt).')) return;
-  const name=`Lernendenberatung_${isMobile?'Handy':'Sicherung'}_${isoToday()}_${n}-Eintraege.json`;
+  const base=`Lernendenberatung_${isMobile?'Handy':'Sicherung'}_${isoToday()}_${n}-Eintraege`;
   const json=JSON.stringify(state,null,1);
-  let file=new File([json],name,{type:'application/json'});
-  // Android-Chrome teilt keine .json-Dateien -> als Textdatei (.txt) teilen; Inhalt bleibt gleich
-  if(isMobile && navigator.canShare && !navigator.canShare({files:[file]})){
-    const txt=new File([json],name.replace(/\.json$/,'.txt'),{type:'text/plain'});
-    if(navigator.canShare({files:[txt]})) file=txt;
-  }
+  const fJson=new File([json],base+'.json',{type:'application/json'});
+  const fTxt=new File([json],base+'.txt',{type:'text/plain'});
   const done=()=>{ try{ localStorage.setItem(LS_KEY+'.lastExport',new Date().toISOString()); }catch(e){} renderFileState(); };
-  if(isMobile && navigator.canShare && navigator.canShare({files:[file]})){
-    try{ await navigator.share({files:[file],title:'Lernendenberatung – Daten'}); done(); toast('Daten exportiert'); return; }
-    catch(e){ if(e.name==='AbortError') return; }
-  }
-  const a=document.createElement('a'); a.href=URL.createObjectURL(file); a.download=name; document.body.appendChild(a); a.click();
-  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000); done(); toast('Daten exportiert');
+  let diag='';
+  if(isMobile && navigator.share){
+    // Android-Chrome teilt keine .json-Dateien -> dort .txt (gleicher Inhalt), iPhone .json
+    const order = isIOS ? [fJson,fTxt] : [fTxt,fJson];
+    const can = f => { try{ return navigator.canShare ? navigator.canShare({files:[f]}) : true; }catch(e){ return false; } };
+    const f = order.find(can);
+    diag = `canShare txt=${can(fTxt)} json=${can(fJson)}`;
+    if(f){
+      try{ await navigator.share({files:[f],title:'Lernendenberatung – Daten'}); done(); toast('Kopie gespeichert'); return; }
+      catch(e){ if(e.name==='AbortError') return; diag += ` · Fehler=${e.name}: ${e.message}`; }
+    }
+  } else if(isMobile){ diag='Teilen wird von diesem Browser nicht unterstützt'; }
+  const dl = isMobile && !isIOS ? fTxt : fJson;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(dl); a.download=dl.name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000); done();
+  if(isMobile) showManualUpload(dl.name, diag); else toast('Kopie exportiert');
+}
+function showManualUpload(name, diag){
+  $('mu-name').textContent=name; $('mu-diag').textContent=diag?('Technischer Hinweis: '+diag):'';
+  $('manualModal').classList.remove('hide');
 }
 window.backup=backup;
 async function importBackup(ev){
