@@ -15,81 +15,177 @@
 <title>Lernendenberatung</title>
 <style>
 :root{
-  --blue:#009cd8; --blue-dark:#148ac0; --blue-light:#20a8dc;
-  --magenta:#cf0044; --yellow:#fcb325; --black:#1a1a1a;
-  --bg:var(--blue); --panel:#ffffff; --ink:#1a1a1a; --muted:#5a6670; --line:#dfe5ea;
-  --accent:var(--magenta); --accent-ink:#ffffff; --accent-soft:#d9f0fa;
+  --blue:#009cd8; --blue-dark:#0b7fb3; --blue-deep:#086a96; --blue-soft:#e5f4fb;
+  --magenta:#cf0044; --magenta-dark:#a80037; --yellow:#fcb325; --yellow-soft:#fff6e0;
+  --bg:#eef3f7; --panel:#ffffff; --ink:#14222c; --muted:#5d6b77; --line:#dde5ec; --line-strong:#c9d4dd;
+  --ok:#1d7a4a; --ok-soft:#e6f4ec;
   --soz:var(--blue-dark); --psy:var(--magenta); --son:var(--yellow); --sit:#2e2f2f;
-  --warn:#cf0044; --ok:#1d7a4a;
-  --radius:18px;
+  --radius:12px; --shadow:0 1px 2px rgba(16,34,48,.05),0 2px 8px rgba(16,34,48,.04);
 }
 *{box-sizing:border-box}
-body{margin:0;color:var(--ink);font:15px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;
-  background:var(--blue) linear-gradient(118deg,var(--blue-dark) 0 22%,var(--blue) 22% 64%,var(--blue-light) 64% 100%) fixed;min-height:100vh}
-header{position:sticky;top:0;z-index:5;background:linear-gradient(118deg,var(--blue-dark) 0 22%,var(--blue) 22% 100%);box-shadow:0 2px 12px rgba(0,40,70,.18)}
-.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
-.top{display:flex;align-items:center;gap:14px;padding:14px 0 4px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* Kopfzeile */
+header{position:sticky;top:0;z-index:20;background:linear-gradient(110deg,var(--blue-dark) 0 26%,var(--blue) 26% 100%);color:#fff;padding-top:env(safe-area-inset-top);box-shadow:0 1px 0 rgba(0,0,0,.06),0 4px 14px rgba(0,60,90,.14)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.top{display:flex;align-items:center;gap:12px;padding:12px 0 10px}
 .icon{flex:none;width:46px;height:46px;border-radius:50%;background:var(--magenta);display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.15)}
-.titles h1{font-size:22px;margin:0;font-weight:800;color:#fff;letter-spacing:-.2px;line-height:1.1}
-.titles .sub{display:inline-block;margin-top:3px;color:#fff;font-weight:700;font-size:13px;position:relative;padding-bottom:3px}
+.icon svg{width:26px;height:26px}
+.titles h1{font-size:21px;margin:0;font-weight:800;letter-spacing:-.2px;line-height:1.15}
+.titles .sub{display:inline-block;margin-top:3px;font-size:13px;font-weight:700;position:relative;padding-bottom:4px;white-space:nowrap}
 .titles .sub::after{content:"";position:absolute;left:0;right:-4px;bottom:0;height:3px;border-radius:3px;background:var(--magenta);transform:rotate(-1.5deg)}
-.top .who{margin-left:auto;color:#fff;opacity:.9;font-size:13px;text-align:right}
-.logo{height:46px;width:auto;margin-left:14px;flex:none}
-nav{display:flex;gap:6px;padding:10px 0 12px;overflow-x:auto}
-nav button{border:0;background:rgba(255,255,255,.16);padding:8px 16px;font:inherit;font-weight:700;color:#fff;border-radius:22px;cursor:pointer;white-space:nowrap}
-nav button:hover{background:rgba(255,255,255,.28)}
-nav button.on{background:#fff;color:var(--black)}
-main{padding:22px 0 60px}
+.top .who{margin-left:auto;font-size:13px;opacity:.92;text-align:right;white-space:nowrap}
+.iconbtn{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer}
+.iconbtn:hover,.iconbtn.on{background:rgba(255,255,255,.24)}
+.iconbtn svg{width:20px;height:20px}
+.logo{height:46px;width:auto;flex:none;margin-left:6px}
+nav{display:flex;gap:2px;margin:0 -4px}
+nav button{display:flex;align-items:center;gap:8px;border:0;background:none;color:rgba(255,255,255,.82);font:inherit;font-size:14px;font-weight:600;padding:10px 12px 12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button:hover{color:#fff}
+nav button.on{color:#fff;border-bottom-color:#fff}
+
+/* Inhalt */
+main{padding:22px 0 64px}
 section{display:none} section.on{display:block}
-.card{background:var(--panel);border-radius:var(--radius);padding:20px 22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,40,70,.16)}
-.card h2{font-size:17px;margin:0 0 16px;font-weight:800;display:inline-block;position:relative;padding-bottom:4px}
-.card h2::after{content:"";position:absolute;left:0;right:-6px;bottom:0;height:3px;border-radius:3px;background:var(--magenta);transform:rotate(-1deg)}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px;font-weight:700}
-input,select,textarea{width:100%;font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
-input:focus,select:focus,textarea:focus{outline:3px solid var(--accent-soft);border-color:var(--blue)}
-.seg{display:flex;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;background:#fff}
-.seg button{flex:1;border:0;background:none;padding:9px 10px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink);border-right:1.5px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card h2{display:flex;align-items:center;gap:10px;font-size:16px;margin:0 0 16px;font-weight:700;letter-spacing:-.1px}
+.card h2::before{content:"";width:4px;height:18px;border-radius:2px;background:var(--magenta);flex:none}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+input,select,textarea{width:100%;font:inherit;padding:9px 12px;min-height:42px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+textarea{min-height:auto;line-height:1.6}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,156,216,.18)}
+.seg{display:flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:#fff;min-height:42px}
+.seg button{flex:1;border:0;background:none;padding:8px 10px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;color:var(--ink);border-right:1px solid var(--line)}
 .seg button:last-child{border-right:0}
-.seg button.on{background:var(--magenta);color:#fff;font-weight:800}
-.btn{border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:9px 18px;border-radius:22px;font:inherit;font-weight:700;cursor:pointer}
-.btn:hover{border-color:var(--blue)}
+.seg button:hover{background:#f5f8fa}
+.seg button.on{background:var(--blue-dark);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--line-strong);background:#fff;color:var(--ink);padding:8px 16px;border-radius:8px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--blue);background:#f7fbfd}
 .btn.primary{background:var(--magenta);border-color:var(--magenta);color:#fff}
-.btn.primary:hover{background:#b0003a}
+.btn.primary:hover{background:var(--magenta-dark);border-color:var(--magenta-dark)}
 .btn.danger{color:var(--magenta)}
-.btn.small{padding:5px 12px;font-size:13px}
+.btn.danger:hover{border-color:var(--magenta);background:#fff5f8}
+.btn.small{min-height:32px;padding:5px 12px;font-size:13px}
+.btn.ic{width:34px;min-height:34px;padding:0}
+.btn.ic svg{width:16px;height:16px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.dauer{display:inline-block;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;background:var(--yellow);border-radius:22px;padding:4px 14px}
-.hint{color:var(--muted);font-size:12.5px}
+.dauer{display:inline-flex;align-items:center;min-height:42px;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--yellow-soft);border:1px solid #f5d58a;color:#5b3d00;border-radius:8px;padding:0 14px}
+.hint{color:var(--muted);font-size:13px}
 .hide{display:none!important}
+body.mobile .dev-desktop, body:not(.mobile) .dev-mobile{display:none!important}
+
+/* Tabellen */
 table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;font-size:12px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--line);padding:8px 6px}
-td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:top}
+th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line-strong);padding:8px 8px}
+td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:middle}
+tbody tr:hover td{background:#f8fafc}
 td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
-.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:800;color:#fff}
-.t-Soziales{background:var(--soz)} .t-Psychisch{background:var(--psy)} .t-Sonstiges{background:var(--son);color:var(--black)} .t-Sitzung{background:var(--sit)}
+td.c-act{text-align:right;white-space:nowrap}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
 .tbl-scroll{overflow-x:auto}
-.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.kpi{background:#eef7fc;border-radius:14px;padding:12px 14px;border-left:5px solid var(--blue)}
-.kpi.hl{background:var(--yellow);border-left-color:var(--magenta)}
-.kpi .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
-.kpi .l{font-size:12px;color:var(--muted);font-weight:600}
-.kpi.hl .l{color:var(--black)}
-.bar{display:grid;grid-template-columns:180px 1fr 70px;gap:10px;align-items:center;margin:7px 0;font-size:13.5px;font-weight:600}
-.bar .track{background:#eef1f4;border-radius:10px;height:18px;overflow:hidden}
-.bar .fill{height:100%;border-radius:10px}
-.bar .val{text-align:right;font-variant-numeric:tabular-nums}
-.banner{padding:10px 16px;border-radius:14px;margin-bottom:16px;font-size:14px;font-weight:600;line-height:1.6}
+
+/* Auswertung */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.kpi{background:#f6f9fb;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi.hl{background:var(--yellow-soft);border-color:#f5d58a}
+.kpi .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.kpi .l{font-size:12.5px;color:var(--muted);font-weight:600}
+.bar{display:grid;grid-template-columns:200px 1fr 64px;gap:12px;align-items:center;margin:8px 0;font-size:13.5px}
+.bar .track{background:#edf1f4;border-radius:5px;height:12px;overflow:hidden}
+.bar .fill{height:100%;border-radius:5px}
+.bar .val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+
+/* Hinweise */
+.banner{padding:10px 16px;border-radius:10px;margin-bottom:16px;font-size:14px;font-weight:600;line-height:1.6}
 .banner .btn{margin-left:8px;vertical-align:middle}
-.banner.warn{background:#fff4dc;color:#5b3d00;border-left:5px solid var(--yellow)}
-.banner.ok{background:#e7f5ee;color:#1d4d31;border-left:5px solid var(--ok)}
-#fileBanner .banner{box-shadow:0 4px 16px rgba(0,40,70,.16)}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--black);color:#fff;padding:10px 20px;border-radius:22px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
+.banner.warn{background:var(--yellow-soft);color:#5b3d00;border:1px solid #f5d58a}
+.banner.ok{background:var(--ok-soft);color:#1d4d31;border:1px solid #bfe2cd}
+ol.steps{margin:0 0 18px;padding-left:22px} ol.steps li{margin:0 0 10px;padding-left:4px} ol.steps li::marker{color:var(--magenta);font-weight:700}
+.status{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:10px;margin-bottom:10px;font-size:14.5px;line-height:1.55;border:1px solid transparent}
+.status .ic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;margin-top:1px}
+.status.ok{background:var(--ok-soft);border-color:#bfe2cd} .status.ok .ic{background:var(--ok)}
+.status.warn{background:var(--yellow-soft);border-color:#f5d58a} .status.warn .ic{background:var(--yellow);color:var(--ink)}
+.status .btn{margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:5px 14px 5px 6px;font-size:13px;font-weight:600;margin-bottom:16px;box-shadow:var(--shadow);cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--blue)}
+.chip .dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .toast.on{opacity:1}
-main{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
-header{padding-top:env(safe-area-inset-top)}
-@media (max-width:640px){ .seg .long{display:none} .card{padding:16px} .grid{grid-template-columns:1fr 1fr;gap:12px} .grid>div[style*="grid-column:span 2"]{grid-column:1/-1!important} .seg button{padding:10px 6px} input,select{font-size:16px} nav button{padding:8px 13px} .bar{grid-template-columns:80px 1fr 56px} .top .who{display:none} .logo{height:36px} .titles h1{font-size:19px} }
-@media print{ header,.noprint{display:none} section{display:block!important} body{background:#fff} .card{box-shadow:none;border:1px solid var(--line)} }
+
+/* Installationsanleitung */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(10,30,45,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.modal.hide{display:none}
+.sheet{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.sheet-head{background:linear-gradient(110deg,var(--blue-dark) 0 30%,var(--blue) 30%);color:#fff;padding:20px 22px;border-radius:16px 16px 0 0;display:flex;gap:14px;align-items:center}
+.sheet-head img{width:54px;height:54px;border-radius:12px;flex:none;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.sheet-head h3{margin:0;font-size:19px} .sheet-head p{margin:2px 0 0;font-size:13.5px;opacity:.9}
+.sheet-body{padding:18px 22px 22px}
+.ostabs{display:flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.ostabs button{flex:1;border:0;background:#fff;font:inherit;font-weight:600;padding:9px;cursor:pointer;color:var(--ink)}
+.ostabs button.on{background:var(--blue-dark);color:#fff}
+ol.inst{list-style:none;margin:0 0 16px;padding:0;counter-reset:n}
+ol.inst li{counter-increment:n;display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);line-height:1.5}
+ol.inst li:last-child{border-bottom:0}
+ol.inst li::before{content:counter(n);flex:none;width:26px;height:26px;border-radius:50%;background:var(--magenta);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:1px}
+.kbd{display:inline-flex;align-items:center;gap:4px;background:#f1f4f7;border:1px solid var(--line-strong);border-radius:6px;padding:1px 7px;font-weight:700;white-space:nowrap}
+.kbd svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sheet-foot{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:6px}
+.sheet-foot label{display:flex;gap:8px;align-items:center;margin:0;font-weight:500;color:var(--muted);font-size:13.5px;cursor:pointer}
+.sheet-foot input{width:18px;height:18px;min-height:0;margin:0}
+@media (min-width:721px){ .modal{align-items:center} }
+
+/* Handy */
+@media (max-width:720px){
+  body{font-size:16px}
+  .wrap{padding:0 14px}
+  .top{padding:10px 0}
+  .icon{width:40px;height:40px} .icon svg{width:23px;height:23px}
+  .titles h1{font-size:18px} .titles .sub{font-size:12px}
+  .titles{min-width:0}
+  .top .who{display:none}
+  .iconbtn{margin-left:auto;width:36px;height:36px}
+  .logo{height:36px}
+  nav{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:30;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 12px rgba(16,34,48,.06);padding:4px 4px calc(4px + env(safe-area-inset-bottom));justify-content:space-around}
+  nav button{flex:1;flex-direction:column;gap:3px;color:var(--muted);font-size:11px;font-weight:600;padding:6px 2px;border-bottom:0;border-radius:8px}
+  nav button svg.i{width:23px;height:23px}
+  nav button:hover{color:var(--ink)}
+  nav button.on{color:var(--magenta);border-bottom:0;background:#fdf0f4}
+  nav button .lbl-long{display:none}
+  main{padding:16px 0 calc(92px + env(safe-area-inset-bottom))}
+  .card{padding:16px;border-radius:12px;margin-bottom:12px}
+  .card h2{font-size:16.5px}
+  .grid{grid-template-columns:1fr 1fr;gap:14px}
+  .grid>div[style*="grid-column:span 2"]{grid-column:1/-1!important}
+  .seg .long{display:none}
+  .seg button{font-size:15px;padding:8px 4px}
+  input,select,textarea{font-size:16px;min-height:46px}
+  .seg{min-height:46px}
+  .btn{min-height:44px;font-size:15px}
+  .btn.small{min-height:36px;font-size:14px}
+  .btn.ic{width:38px;min-height:38px}
+  .dauer{min-height:46px}
+  /* Einträge als Liste */
+  table thead{display:none}
+  table,tbody{display:block}
+  .tbl-scroll{overflow:visible}
+  tbody tr{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;grid-template-areas:"date date date tag" "time dur . act" "det det det act";gap:2px 10px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+  tbody tr:last-child{border-bottom:0}
+  tbody tr:hover td{background:none}
+  td{border:0;padding:0;font-size:15px}
+  td.c-date{grid-area:date;font-weight:700} td.c-time{grid-area:time;color:var(--muted)} td.c-dur{grid-area:dur;color:var(--muted)}
+  td.c-tag{grid-area:tag;text-align:right} td.c-det{grid-area:det;font-size:14px;color:var(--muted);min-width:0} td.c-act{grid-area:act;align-self:center}
+  td.c-time,td.c-dur{font-size:14px}
+  td.hint{grid-column:1/-1}
+  .bar{grid-template-columns:1fr 64px;gap:4px 10px;margin:12px 0}
+  .bar .track{grid-column:1/-1;grid-row:2}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:12px 14px} .kpi .v{font-size:21px} .kpi .l{font-size:13px}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+@media print{ header,nav,.noprint{display:none!important} section{display:block!important} body{background:#fff} .card{box-shadow:none} }
 </style>
 </head>
 <body>
@@ -99,14 +195,15 @@ header{padding-top:env(safe-area-inset-top)}
       <div class="icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H10l-4 4v-4H4z"/><circle cx="9" cy="10.5" r=".6" fill="#fff"/><circle cx="12" cy="10.5" r=".6" fill="#fff"/><circle cx="15" cy="10.5" r=".6" fill="#fff"/></svg></div>
       <div class="titles"><h1>Lernendenberatung</h1><span class="sub">Beratung &amp; Hilfe · Erfassung</span></div>
       <div class="who" id="who"></div>
+      <button class="iconbtn" data-s="einstellungen" id="btnGear" title="Einstellungen" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg></button>
       <img class="logo" alt="BFSU Berufsfachschule Uster" src="data:image/png;base64,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">
     </div>
     <nav id="nav">
-      <button data-s="erfassen" class="on">Erfassen</button>
-      <button data-s="eintraege">Einträge</button>
-      <button data-s="auswertung">Auswertung</button>
-      <button data-s="export">Abrechnung</button>
-      <button data-s="einstellungen">Einstellungen &amp; Daten</button>
+      <button data-s="erfassen" class="on"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span>Erfassen</span></button>
+      <button data-s="eintraege"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01" stroke-width="3"/></svg><span>Einträge</span></button>
+      <button data-s="auswertung"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-5M11 16V6M16 16v-8M20 16v-3"/></svg><span>Auswertung</span></button>
+      <button data-s="export"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><span>Abrechnung</span></button>
+      <button data-s="daten"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.5a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 17.8 8.6 4.5 4.5 0 0 1 17.5 18.5z"/><path d="M12 11v5M9.8 13.8 12 16l2.2-2.2"/></svg><span>Daten<span class="lbl-long"> &amp; OneDrive</span></span></button>
     </nav>
   </div>
 </header>
@@ -218,7 +315,7 @@ header{padding-top:env(safe-area-inset-top)}
         <div><label for="sVorname">Vorname</label><input id="sVorname"></div>
         <div><label for="sPers">Pers.-Nr.</label><input id="sPers"></div>
       </div>
-      <div class="row" style="margin-top:14px"><button class="btn primary" id="btnSettings">Speichern</button></div>
+      <div class="row" style="margin-top:14px"><button class="btn primary" id="btnSettings">Speichern</button><button class="btn" id="btnShowInstall">Anleitung: App installieren</button></div>
     </div>
 
     <div class="card">
@@ -228,28 +325,89 @@ header{padding-top:env(safe-area-inset-top)}
       <div class="row" style="margin-top:14px"><button class="btn primary" id="btnThemen">Themen speichern</button><button class="btn" id="btnThemenReset">Vorschlag wiederherstellen</button></div>
     </div>
 
+  </section>
+
+  <!-- DATEN & ONEDRIVE -->
+  <section id="daten">
     <div class="card">
-      <h2>Datenspeicherung</h2>
-      <p class="hint" style="margin-top:-6px" id="storageHint"></p>
-      <div id="fileState" style="margin-bottom:12px"></div>
-      <div class="row" id="linkRow">
-        <button class="btn" id="btnLinkNew">Neue Datendatei anlegen</button>
-        <button class="btn" id="btnLinkOpen">Bestehende Datendatei öffnen</button>
+      <h2>Wo sind meine Daten?</h2>
+      <div id="fileState"></div>
+      <p class="hint" id="dataInfo" style="margin-bottom:0"></p>
+    </div>
+
+    <div class="card dev-desktop">
+      <h2>Am Computer: automatisch im OneDrive speichern</h2>
+      <ol class="steps">
+        <li><b>Einmal einrichten:</b> Klicke auf «Datendatei im OneDrive anlegen». Wähle im Fenster links <b>OneDrive</b> (dein Schulkonto), öffne oder erstelle dort den Ordner <b>Lernendenberatung</b> und klicke auf <b>Speichern</b>.</li>
+        <li><b>Ab jetzt automatisch:</b> Jeder Eintrag wird sofort in diese Datei im OneDrive gespeichert. Du musst nichts weiter tun.</li>
+        <li><b>Nach einem Neustart</b> von Browser oder Computer erscheint oben ein gelber Hinweis. Klicke einmal auf <b>Zugriff erlauben</b>.</li>
+        <li><b>Zweiter Computer:</b> Klicke dort auf «Datendatei aus OneDrive öffnen» und wähle dieselbe Datei. Beide Computer arbeiten dann mit denselben Daten.</li>
+      </ol>
+      <div class="row">
+        <button class="btn primary" id="btnLinkNew">Datendatei im OneDrive anlegen</button>
+        <button class="btn" id="btnLinkOpen">Datendatei aus OneDrive öffnen</button>
         <button class="btn" id="btnUnlink">Verknüpfung lösen</button>
       </div>
-      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0" id="linkHr">
+    </div>
+
+    <div class="card dev-mobile">
+      <h2>Auf dem Handy: Kopie ins OneDrive</h2>
+      <ol class="steps">
+        <li>Deine Einträge werden <b>auf diesem Handy</b> gespeichert, auch ohne Internet.</li>
+        <li><b>Mindestens einmal pro Woche</b> auf «Kopie ins OneDrive speichern» tippen. Im Teilen-Menü <b>OneDrive</b> wählen (iPhone auch: «In Dateien sichern» → <b>OneDrive</b>) und den Ordner <b>Lernendenberatung</b>.</li>
+        <li><b>Am Computer</b> übernimmst du die Kopie mit «Daten einlesen». Die Einträge werden zusammengeführt, es entstehen keine Doppelten.</li>
+        <li><b>Umgekehrt:</b> Mit «Daten einlesen» holst du die Datendatei vom Computer (<i>Lernendenberatung_Daten.json</i>) aus dem OneDrive aufs Handy.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Kopie und Einlesen</h2>
       <div class="row">
-        <button class="btn" id="btnBackup">Daten exportieren</button>
-        <label class="btn" style="margin:0;color:var(--ink);font-size:15px">Daten einlesen<input type="file" id="fImport" accept=".json,application/json" hidden></label>
-        <button class="btn danger" id="btnWipe">Alle Daten löschen</button>
+        <button class="btn" id="btnBackup">Kopie exportieren</button>
+        <label class="btn" style="margin:0;color:var(--ink);font-size:15px" id="lblImport"><span id="lblImportTxt">Daten einlesen</span><input type="file" id="fImport" accept=".json,application/json" hidden></label>
       </div>
-      <p class="hint" id="dataInfo"></p>
+      <p class="hint" id="copyHint"></p>
+      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+      <button class="btn danger" id="btnWipe">Alle Daten auf diesem Gerät löschen</button>
     </div>
   </section>
 </main>
 
 <datalist id="dlBeruf"></datalist>
 <datalist id="dlKanal"></datalist>
+<div class="modal hide" id="installModal" role="dialog" aria-modal="true" aria-labelledby="instTitle">
+  <div class="sheet">
+    <div class="sheet-head"><img src="apple-touch-icon.png" alt=""><div><h3 id="instTitle">App installieren</h3><p>So startest du die Lernendenberatung wie eine normale App – mit eigenem Symbol und auch ohne Internet.</p></div></div>
+    <div class="sheet-body">
+      <div class="ostabs" id="osTabs"><button data-os="ios">iPhone</button><button data-os="android">Android</button><button data-os="pc">Computer</button></div>
+      <ol class="inst" data-os="ios">
+        <li><span>Öffne diese Seite in <b>Safari</b> (nicht in einer anderen App oder einem anderen Browser).</span></li>
+        <li><span>Tippe unten in der Leiste auf <span class="kbd"><svg viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> Teilen</span>.</span></li>
+        <li><span>Scrolle im Menü nach unten und tippe auf <span class="kbd"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg> Zum Home-Bildschirm</span>.</span></li>
+        <li><span>Tippe oben rechts auf <b>Hinzufügen</b>.</span></li>
+        <li><span>Öffne die App ab jetzt <b>nur noch über das neue Symbol</b> auf dem Home-Bildschirm. So bleiben deine Daten sicher gespeichert.</span></li>
+      </ol>
+      <ol class="inst" data-os="android">
+        <li><span>Öffne diese Seite in <b>Chrome</b>.</span></li>
+        <li><span>Tippe oben rechts auf das Menü <span class="kbd"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></span>.</span></li>
+        <li><span>Tippe auf <b>App installieren</b> oder <b>Zum Startbildschirm hinzufügen</b>.</span></li>
+        <li><span>Bestätige mit <b>Installieren</b>.</span></li>
+        <li><span>Öffne die App ab jetzt über das neue Symbol auf dem Startbildschirm.</span></li>
+      </ol>
+      <ol class="inst" data-os="pc">
+        <li><span>Öffne diese Seite in <b>Edge</b> oder <b>Chrome</b>.</span></li>
+        <li><span>Klicke rechts in der Adressleiste auf das Symbol <span class="kbd"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg> App installieren</span> – oder im Menü <span class="kbd"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></span> auf <b>Apps</b> → <b>Diese Website als App installieren</b>.</span></li>
+        <li><span>Bestätige mit <b>Installieren</b>. Die App erscheint im Startmenü bzw. Dock.</span></li>
+        <li><span>Richte danach unter <b>Daten &amp; OneDrive</b> die Datendatei im OneDrive ein.</span></li>
+      </ol>
+      <button class="btn primary hide" id="btnInstallNow" style="width:100%;margin-bottom:14px">Jetzt installieren</button>
+      <div class="sheet-foot">
+        <label><input type="checkbox" id="instNoMore"> Nicht mehr anzeigen</label>
+        <button class="btn primary" id="btnInstClose">Verstanden</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>/*! ExcelJS 19-10-2023 */
@@ -380,7 +538,7 @@ async function linkNew(){
   if(!fsaOk) return toast('Nur in Edge oder Chrome möglich');
   try{
     const h = await window.showSaveFilePicker({suggestedName:'Lernendenberatung_Daten.json', types:[{description:'Datendatei',accept:{'application/json':['.json']}}]});
-    fileHandle=h; filePermOk=true; await idbSet('handle',h); await persist(); renderAll(); toast('Datendatei angelegt');
+    fileHandle=h; filePermOk=true; await idbSet('handle',h); askOnedrive(); await persist(); renderAll(); toast('Datendatei angelegt – speichert ab jetzt automatisch');
   }catch(e){ if(e.name!=='AbortError') toast('Fehler: '+e.message); }
 }
 async function linkOpen(){
@@ -390,7 +548,7 @@ async function linkOpen(){
     const perm = await h.requestPermission({mode:'readwrite'});
     const d = await readHandle(h);
     if(d) mergeData(d);
-    fileHandle=h; filePermOk = perm==='granted'; await idbSet('handle',h); await persist(); renderAll(); fillSettings(); toast('Datendatei verknüpft');
+    fileHandle=h; filePermOk = perm==='granted'; await idbSet('handle',h); askOnedrive(); await persist(); renderAll(); fillSettings(); toast('Datendatei verknüpft');
   }catch(e){ if(e.name!=='AbortError') toast('Fehler: '+e.message); }
 }
 async function reconnect(){
@@ -403,32 +561,48 @@ async function reconnect(){
     await persist(); renderAll(); fillSettings(); toast('Datendatei verbunden');
   }catch(e){ toast('Datei nicht erreichbar: '+e.message); }
 }
-async function unlink(){ fileHandle=null; filePermOk=false; await idbSet('handle',undefined); renderAll(); toast('Verknüpfung gelöst – Daten bleiben im Browser'); }
+async function unlink(){ if(!confirm('Verknüpfung mit der Datendatei lösen? Die Datei im OneDrive bleibt bestehen, wird aber nicht mehr aktualisiert.')) return; fileHandle=null; filePermOk=false; await idbSet('handle',undefined); renderAll(); toast('Verknüpfung gelöst – Daten bleiben im Browser'); }
 
+function onedriveFlag(){ try{ return localStorage.getItem(LS_KEY+'.onedrive'); }catch(e){ return null; } }
+function setOnedriveFlag(v){ try{ localStorage.setItem(LS_KEY+'.onedrive',v?'1':'0'); }catch(e){} }
+function askOnedrive(){ setOnedriveFlag(confirm('Hast du die Datendatei in deinem OneDrive (Schulkonto) gespeichert?\n\nOK = ja, liegt im OneDrive\nAbbrechen = nein, an einem anderen Ort')); }
+const fmtTime = iso => iso ? new Date(iso).toLocaleString('de-CH',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '–';
+function statusBox(kind, title, text, btn){
+  return `<div class="status ${kind}"><div class="ic">${kind==='ok'?'✓':'!'}</div><div><b>${title}</b><br>${text}${btn||''}</div></div>`;
+}
+function chip(kind, text, action){
+  return `<button class="chip noprint" onclick="${action||"showSec('daten')"}"><span class="dot" style="background:${kind==='ok'?'var(--ok)':'var(--yellow)'};color:${kind==='ok'?'#fff':'#1a1a1a'}">${kind==='ok'?'✓':'!'}</span>${text}</button>`;
+}
 function renderFileState(){
   const fs=$('fileState'), fb=$('fileBanner');
-  fb.innerHTML='';
   if(!fsaOk){
     const last=lastExport(), days=last?Math.floor((Date.now()-new Date(last))/864e5):null;
-    const lastTxt = last ? `Letzter Export: ${new Date(last).toLocaleDateString('de-CH')}` : 'Noch nie exportiert';
-    let html = `<div class="banner ${days===null||days>7?'warn':'ok'}">Daten auf diesem Gerät gespeichert. ${lastTxt}.</div>`;
-    if(isIOS && !isStandalone) html += '<div class="banner warn">Wichtig auf dem iPhone: In Safari auf <b>Teilen</b> → <b>Zum Home-Bildschirm</b> tippen und die App nur noch von dort öffnen. Sonst kann Safari die Daten nach einigen Wochen löschen.</div>';
+    let html = statusBox('ok','Deine Einträge sind auf diesem Handy gespeichert.', 'Sie bleiben auf dem Gerät, auch ohne Internet.');
+    if(!last) html += statusBox('warn','Noch keine Kopie im OneDrive.','Speichere jetzt eine Kopie, damit die Daten auch am Computer verfügbar und bei Verlust des Handys gesichert sind.','<br><button class="btn small primary" onclick="backup()">Kopie ins OneDrive speichern</button>');
+    else if(days>7) html += statusBox('warn',`Letzte Kopie im OneDrive: ${new Date(last).toLocaleDateString('de-CH')} (vor ${days} Tagen)`,'Bitte eine neue Kopie speichern.','<br><button class="btn small primary" onclick="backup()">Kopie ins OneDrive speichern</button>');
+    else html += statusBox('ok',`Letzte Kopie im OneDrive: ${fmtTime(last)}`,'Einträge, die du seither erfasst hast, sind erst nach der nächsten Kopie im OneDrive.');
+    if(isIOS && !isStandalone) html += statusBox('warn','Wichtig auf dem iPhone','In Safari auf <b>Teilen</b> → <b>Zum Home-Bildschirm</b> tippen und die App nur noch von dort öffnen. Sonst kann Safari die Daten nach einigen Wochen löschen.','<br><button class="btn small" onclick="openInstall()">Anleitung anzeigen</button>');
     fs.innerHTML=html;
-    if(state.entries.length && (days===null || days>7))
-      fb.innerHTML='<div class="banner warn noprint">Daten seit über einer Woche nicht gesichert. <button class="btn small primary" onclick="backup()">Jetzt exportieren</button></div>';
-    else if(isIOS && !isStandalone)
-      fb.innerHTML='<div class="banner warn noprint">Tipp: <b>Teilen</b> → <b>Zum Home-Bildschirm</b>, damit die App wie eine App startet und die Daten sicher bleiben.</div>';
+    fb.innerHTML = (!last || days>7) && state.entries.length
+      ? chip('warn', last ? `Letzte OneDrive-Kopie vor ${days} Tagen – jetzt sichern` : 'Noch keine Kopie im OneDrive – jetzt sichern')
+      : (!isStandalone && location.protocol==='https:') ? chip('warn','App noch nicht installiert – Anleitung','openInstall()')
+      : (last ? chip('ok', `Letzte OneDrive-Kopie: ${new Date(last).toLocaleDateString('de-CH')}`) : '');
     return;
   }
+  const od = onedriveFlag()==='1';
   if(!fileHandle){
-    fs.innerHTML='<div class="banner warn">Keine Datendatei verknüpft. Die Daten liegen nur im Browser-Speicher.</div>';
-    fb.innerHTML='<div class="banner warn noprint">Daten nur im Browser gespeichert. <button class="btn small" onclick="showSec(\'einstellungen\')">Datendatei verknüpfen</button></div>';
+    fs.innerHTML=statusBox('warn','Deine Daten sind noch nicht im OneDrive.','Sie liegen nur in diesem Browser und gehen verloren, wenn Browserdaten gelöscht werden. Richte die Datendatei ein – Anleitung unten.','<br><button class="btn small primary" onclick="linkNew()">Datendatei im OneDrive anlegen</button>');
+    fb.innerHTML=chip('warn','Noch nicht im OneDrive gespeichert – jetzt einrichten');
   } else if(!filePermOk){
-    fs.innerHTML=`<div class="banner warn">Verknüpft mit <b>${esc(fileHandle.name)}</b> – Zugriff muss bestätigt werden.</div>`;
-    fb.innerHTML=`<div class="banner warn noprint">Datendatei <b>${esc(fileHandle.name)}</b>: Zugriff bestätigen, damit gespeichert wird. <button class="btn small primary" id="btnReconnect">Zugriff erlauben</button></div>`;
-    $('btnReconnect').onclick=reconnect;
+    fs.innerHTML=statusBox('warn',`Datendatei «${esc(fileHandle.name)}» – Zugriff bestätigen`,'Nach einem Neustart muss der Browser einmal nachfragen. Bis dahin wird nur im Browser gespeichert.','<br><button class="btn small primary" id="btnReconnect2">Zugriff erlauben</button>');
+    fb.innerHTML=`<div class="banner warn noprint">Datendatei <b>${esc(fileHandle.name)}</b>${od?' im OneDrive':''}: Zugriff bestätigen, damit gespeichert wird. <button class="btn small primary" id="btnReconnect">Zugriff erlauben</button></div>`;
+    $('btnReconnect').onclick=reconnect; $('btnReconnect2').onclick=reconnect;
+  } else if(od){
+    fs.innerHTML=statusBox('ok','Deine Daten sind im OneDrive gespeichert.',`Datei: <b>${esc(fileHandle.name)}</b> · zuletzt gespeichert: ${fmtTime(state.savedAt)}<br>Jede Änderung wird sofort gespeichert.`);
+    fb.innerHTML=chip('ok',`Im OneDrive gespeichert · ${fmtTime(state.savedAt)}`);
   } else {
-    fs.innerHTML=`<div class="banner ok">Speichert laufend in <b>${esc(fileHandle.name)}</b>.</div>`;
+    fs.innerHTML=statusBox('warn',`Gespeichert in «${esc(fileHandle.name)}» – aber nicht im OneDrive`,'Die Datei liegt an einem anderen Ort. Lege für mehr Sicherheit eine neue Datendatei im OneDrive an. Die bisherigen Einträge werden übernommen.','<br><button class="btn small primary" onclick="linkNew()">Datendatei im OneDrive anlegen</button> <button class="btn small" onclick="setOnedriveFlag(true);renderFileState()">Liegt doch im OneDrive</button>');
+    fb.innerHTML=chip('warn',`Gespeichert in ${esc(fileHandle.name)} (nicht im OneDrive)`);
   }
 }
 
@@ -545,9 +719,9 @@ function rowHtml(e, actions=true){
   const det = e.art==='B'
     ? `${e.egkb} · ${esc(e.beruf||'–')}${e.eigeneKlasse?' · eigene Klasse':''}${e.kanal?' · '+esc(e.kanal):''}`
     : 'Supervision / Intervision';
-  return `<tr><td class="num">${fmtDate(e.datum)}</td><td class="num">${e.von}–${e.bis}</td><td class="num">${fmtDur(dur(e))}</td>
-    <td><span class="tag" style="background:${colorOf(th)};color:${textOn(colorOf(th))}">${esc(th)}</span></td><td>${det}${e.notiz?`<div class="hint">${esc(e.notiz)}</div>`:''}</td>
-    ${actions?`<td class="num noprint"><button class="btn small" onclick="editEntry('${e.id}')">Bearbeiten</button> <button class="btn small danger" onclick="delEntry('${e.id}')">✕</button></td>`:''}</tr>`;
+  return `<tr><td class="num c-date">${fmtDate(e.datum)}</td><td class="num c-time">${e.von}–${e.bis}</td><td class="num c-dur">${fmtDur(dur(e))} h</td>
+    <td class="c-tag"><span class="tag" style="background:${colorOf(th)};color:${textOn(colorOf(th))}">${esc(th)}</span></td><td class="c-det">${det}${e.notiz?`<div class="hint">${esc(e.notiz)}</div>`:''}</td>
+    ${actions?`<td class="c-act noprint"><button class="btn ic" title="Bearbeiten" aria-label="Bearbeiten" onclick="editEntry('${e.id}')"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button> <button class="btn ic danger" title="Löschen" aria-label="Löschen" onclick="delEntry('${e.id}')"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button></td>`:''}</tr>`;
 }
 const head = `<thead><tr><th>Datum</th><th>Zeit</th><th>Dauer</th><th>Thema</th><th>Details</th><th class="noprint"></th></tr></thead>`;
 
@@ -595,7 +769,7 @@ function renderDatalists(){
   $('dlBeruf').innerHTML=ber.map(b=>`<option value="${esc(b)}">`).join('');
   $('dlKanal').innerHTML=kan.map(b=>`<option value="${esc(b)}">`).join('');
 }
-function renderWho(){
+function renderWho_(){
   const s=state.settings; $('who').textContent=[s.vorname,s.name].filter(Boolean).join(' ');
   $('dataInfo').textContent=`${state.entries.length} Einträge gespeichert${state.savedAt?' · zuletzt '+new Date(state.savedAt).toLocaleString('de-CH'):''}`;
 }
@@ -610,11 +784,12 @@ function renderExportPreview(){
     (parts>1?` · wird auf <b>${parts} Formulare</b> verteilt`:'')+
     (!state.settings.name?` · <span style="color:var(--warn)">Name fehlt (Einstellungen)</span>`:'');
 }
+function renderWho(){ renderWho_(); $('dataInfo').textContent=`${state.entries.length} Einträge gespeichert`; }
 function renderAll(){ fillFilter(); renderRecent(); renderList(); renderStats(); renderDatalists(); renderWho(); renderFileState(); renderExportPreview(); }
 
 function showSec(id){
   document.querySelectorAll('main section').forEach(s=>s.classList.toggle('on',s.id===id));
-  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
+  document.querySelectorAll('#nav button,#btnGear').forEach(b=>b.classList.toggle('on',b.dataset.s===id)); window.scrollTo(0,0);
 }
 window.showSec=showSec; window.editEntry=editEntry; window.delEntry=delEntry;
 
@@ -717,13 +892,36 @@ async function wipe(){
 }
 
 /* ---------- Start ---------- */
+/* ---------- Installationsanleitung ---------- */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; const b=$('btnInstallNow'); if(b) b.classList.remove('hide'); });
+window.addEventListener('appinstalled',()=>{ deferredPrompt=null; closeInstall(); toast('App installiert'); });
+function setOS(os){
+  document.querySelectorAll('#osTabs button').forEach(b=>b.classList.toggle('on',b.dataset.os===os));
+  document.querySelectorAll('ol.inst').forEach(o=>o.classList.toggle('hide',o.dataset.os!==os));
+}
+function openInstall(){
+  setOS(isIOS?'ios':(/Android/i.test(navigator.userAgent)?'android':'pc'));
+  $('btnInstallNow').classList.toggle('hide',!deferredPrompt);
+  $('installModal').classList.remove('hide');
+}
+function closeInstall(){
+  $('installModal').classList.add('hide');
+  if($('instNoMore').checked){ try{ localStorage.setItem(LS_KEY+'.noInstallHint','1'); }catch(e){} }
+}
+function maybeShowInstall(){
+  if(isStandalone || location.protocol!=='https:') return;
+  let off=null; try{ off=localStorage.getItem(LS_KEY+'.noInstallHint'); }catch(e){}
+  if(!off && isMobile) setTimeout(openInstall,400);
+}
+
 (async function init(){
   loadLocal(); sortEntries();
   timeOptions($('fVon'),6*60,21*60+45); timeOptions($('fBis'),6*60+15,22*60);
   segInit('segArt',onArt); segInit('segEgkb'); segInit('segKlasse');
   $('fVon').onchange=onVonChange; $('fBis').onchange=updateDauer;
   $('btnSave').onclick=saveEntry; $('btnCancel').onclick=()=>resetForm();
-  $('nav').onclick=e=>{ const b=e.target.closest('button'); if(b) showSec(b.dataset.s); };
+  $('nav').onclick=e=>{ const b=e.target.closest('button'); if(b) showSec(b.dataset.s); }; $('btnGear').onclick=()=>showSec('einstellungen');
   fillPeriodSelect($('lPeriod'),'sj'); fillPeriodSelect($('aPeriod'),'sj');
   $('lPeriod').onchange=renderList; $('lFilter').onchange=renderList; $('aPeriod').onchange=renderStats;
   fillPeriodSelect($('ePreset'),'month'); $('ePreset').add(new Option('Eigener Zeitraum','custom'));
@@ -736,14 +934,21 @@ async function wipe(){
   window.addEventListener('focus',syncFromFile); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) syncFromFile(); }); $('btnBackup').onclick=backup; $('fImport').onchange=importBackup; $('btnWipe').onclick=wipe;
   $('btnLinkNew').onclick=linkNew; $('btnLinkOpen').onclick=linkOpen; $('btnUnlink').onclick=unlink;
   if(fsaOk){ const h=await idbGet('handle'); if(h){ fileHandle=h; try{ filePermOk=(await h.queryPermission({mode:'readwrite'}))==='granted'; if(filePermOk){ const d=await readHandle(h); if(d){ mergeData(d); saveLocal(); } } }catch(e){ filePermOk=false; } } }
-  $('storageHint').innerHTML = fsaOk
-    ? 'Die Einträge werden im Browser gespeichert und – wenn verknüpft – laufend in eine Datendatei im OneDrive deines Schulkontos. Über dieselbe Datendatei nutzt du die App auf mehreren Computern; Änderungen werden zusammengeführt. Einträge vom Handy übernimmst du mit «Daten einlesen».'
-    : 'Auf dem Handy bleiben die Einträge auf diesem Gerät. Mit «Daten exportieren» legst du eine Kopie in dein OneDrive (im Teilen-Menü OneDrive wählen). Am Computer übernimmst du sie mit «Daten einlesen» – die Einträge werden zusammengeführt. Umgekehrt kannst du hier die Datendatei vom Computer aus dem OneDrive einlesen.';
-  if(!fsaOk){ $('linkRow').classList.add('hide'); $('linkHr').classList.add('hide'); }
+  if(!fsaOk) document.body.classList.add('mobile');
+  $('btnBackup').textContent = fsaOk ? 'Kopie exportieren' : 'Kopie ins OneDrive speichern';
+  $('lblImportTxt').textContent = fsaOk ? 'Daten einlesen (z. B. Kopie vom Handy)' : 'Daten einlesen (aus OneDrive)';
+  $('copyHint').textContent = fsaOk
+    ? 'Mit «Daten einlesen» übernimmst du Einträge, die du auf dem Handy erfasst und ins OneDrive kopiert hast. Doppelte Einträge entstehen nicht. «Kopie exportieren» erstellt eine zusätzliche Sicherung als Datei.'
+    : 'Die Kopie enthält alle Einträge dieses Handys. Mit «Daten einlesen» holst du Einträge vom Computer oder aus einer früheren Kopie – sie werden zusammengeführt.';
   try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
   if('serviceWorker' in navigator && location.protocol==='https:'){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
   fillSettings(); resetForm(); renderAll();
   if(!state.settings.name) showSec('einstellungen');
+  $('osTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setOS(b.dataset.os); };
+  $('btnInstClose').onclick=closeInstall; $('btnShowInstall').onclick=openInstall;
+  $('installModal').onclick=e=>{ if(e.target.id==='installModal') closeInstall(); };
+  $('btnInstallNow').onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch(e){} deferredPrompt=null; $('btnInstallNow').classList.add('hide'); };
+  maybeShowInstall();
 })();
 </script>
 </body>
