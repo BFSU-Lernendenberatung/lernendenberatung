@@ -333,6 +333,7 @@ ol.inst li::before{content:counter(n);flex:none;width:26px;height:26px;border-ra
       <h2>Wo sind meine Daten?</h2>
       <div id="fileState"></div>
       <p class="hint" id="dataInfo" style="margin-bottom:0"></p>
+      <p class="hint" style="margin:6px 0 0">App-Version: <b>9</b> (27.10.2026)</p>
     </div>
 
     <div class="card dev-desktop">
@@ -985,7 +986,11 @@ function maybeShowInstall(){
     ? 'Mit «Daten einlesen» übernimmst du Einträge, die du auf dem Handy erfasst und ins OneDrive kopiert hast. Doppelte Einträge entstehen nicht. «Kopie exportieren» erstellt eine zusätzliche Sicherung als Datei.'
     : 'Die Kopie enthält alle Einträge dieses Handys. Mit «Daten einlesen» holst du Einträge vom Computer oder aus einer früheren Kopie – sie werden zusammengeführt.';
   try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
-  if('serviceWorker' in navigator && location.protocol==='https:'){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+  if('serviceWorker' in navigator && location.protocol==='https:'){
+    const hadController=!!navigator.serviceWorker.controller; let reloaded=false;
+    if(hadController) navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(reloaded) return; reloaded=true; location.reload(); });
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+  }
   fillSettings(); resetForm(); renderAll();
   if(!state.settings.name) showSec('einstellungen');
   $('osTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setOS(b.dataset.os); };
